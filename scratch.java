@@ -5,10 +5,25 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+//import static jdk.vm.ci.meta.JavaKind.Char;
+
 class Scratch {
 
     public static void main() throws IOException {
-        
+        AC3 ac = new AC3();
+        Path path = Path.of("ac3.txt");
+
+        String line = Files.readString(path).trim();
+
+
+        List<String> lines = Files.readAllLines(path);
+
+//        System.out.println(ac.adventofcode(lines));
+        System.out.println(ac.adventofcode2(lines));
+    }
+
+    public static void main_ac2() throws IOException {
+
 
         AC2 ac2 = new AC2();
         Path path = Path.of("ac2.txt");
@@ -33,11 +48,77 @@ class Scratch {
 
         List<String> lines = Files.readAllLines(path);
 
-        System.out.println(lines.size());
         System.out.println(op.adventofcode(lines));
     }
 }
 
+class AC3{
+
+    public long adventofcode2(List<String> numbers) {
+        long ans = 0;
+
+        for(int i =0;i<numbers.size();i++){
+            char ch = '0';
+            StringBuilder ansCh = new StringBuilder();
+            String number = numbers.get(i);
+
+            int index = 0;
+            int needToFind = 12;
+            int lastMax = 0;
+            while(needToFind>0){
+                while(index<number.length()-needToFind+1){
+                    if(ch<number.charAt(index)){
+                        ch = number.charAt(index);
+                        lastMax = index;
+                    }
+                    index++;
+                }
+                ansCh.append(ch);
+                index = lastMax+1;
+                ch = '0';
+                needToFind--;
+            }
+//            System.out.println(ansCh);
+            ans += Long.parseLong(ansCh.toString());
+        }
+
+        return ans;
+    }
+
+    public int adventofcode(List<String> numbers) {
+        int ans = 0;
+
+
+        for(int i = 0; i < numbers.size(); i++){
+            char ch = '0';
+            String number = numbers.get(i);
+            System.out.println(number.toCharArray());
+            int index = 0;
+            for(int j=0;j<number.length()-1;j++){
+                if (number.charAt(j) > ch){
+                    ch = number.charAt(j);
+                    index = j;
+                }
+            }
+
+            char newCh = number.charAt(index+1);
+            for(int j =index+1;j<number.length();j++){
+                if (number.charAt(j) > newCh){
+                    newCh = number.charAt(j);
+                }
+            }
+            System.out.println(ch+""+newCh);
+            String ansCh = ch+""+newCh;
+            ans += Integer.parseInt(ansCh);
+//            for(Character ch : number.toCharArray()){
+//                System.out.println(ch);
+//                if
+//            }
+        }
+
+        return ans;
+    }
+}
 class AC2 {
 
     public boolean adventofcode2(String is){
@@ -69,7 +150,7 @@ class AC2 {
                 }
 
 //                for(int p=0; p<(is.length()+1)/2; p++, secondPointer++){
-//                    if( is.charAt(p) == is.charAt(secondPointer)){
+//                    if( is.index(p) == is.index(secondPointer)){
 //                        flag = 1;
 //                    } else{
 //                        flag = -1;
