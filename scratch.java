@@ -10,6 +10,15 @@ import java.util.List;
 class Scratch {
 
     public static void main() throws IOException {
+        AC4 ac = new AC4();
+        Path path = Path.of("ac4.txt");
+
+        List<String> lines = Files.readAllLines(path);
+
+        System.out.println(ac.adventofcode(lines));
+    }
+
+    public static void main_ac3() throws IOException {
         AC3 ac = new AC3();
         Path path = Path.of("ac3.txt");
 
@@ -49,6 +58,64 @@ class Scratch {
         List<String> lines = Files.readAllLines(path);
 
         System.out.println(op.adventofcode(lines));
+    }
+}
+
+class AC4 {
+    public long adventofcode(List<String> numbers) {
+
+        int ans = 0;
+        List<List<String>> rolls = new  ArrayList<>();
+
+        for(int i = 0; i < numbers.size(); i++){
+            String[] a = numbers.get(i).split("");
+            rolls.add(Arrays.asList(a));
+        }
+
+
+        while(true) {
+            int before = ans;
+            for (int i = 0; i < rolls.size(); i++) {
+                for (int j = 0; j < rolls.get(i).size(); j++) {
+                    String roll = rolls.get(i).get(j);
+                    int count = 0;
+                    if (roll.equals("@")) {
+                        if (i - 1 >= 0 && j - 1 >= 0 && rolls.get(i - 1).get(j - 1).equals("@")) {
+                            count++;
+                        }
+                        if (j - 1 >= 0 && rolls.get(i).get(j - 1).equals("@")) {
+                            count++;
+                        }
+                        if (i + 1 < rolls.size() && j - 1 >= 0 && rolls.get(i + 1).get(j - 1).equals("@")) {
+                            count++;
+                        }
+                        if (i - 1 >= 0 && rolls.get(i - 1).get(j).equals("@")) {
+                            count++;
+                        }
+                        if (i - 1 >= 0 && j + 1 < rolls.get(i - 1).size() && rolls.get(i - 1).get(j + 1).equals("@")) {
+                            count++;
+                        }
+                        if (i + 1 < rolls.size() && rolls.get(i + 1).get(j).equals("@")) {
+                            count++;
+                        }
+                        if (i + 1 < rolls.size() && j + 1 < rolls.get(i + 1).size() && rolls.get(i + 1).get(j + 1).equals("@")) {
+                            count++;
+                        }
+                        if (j + 1 < rolls.get(i).size() && rolls.get(i).get(j + 1).equals("@")) {
+                            count++;
+                        }
+                        if (count < 4) {
+                            ans++;
+                            rolls.get(i).set(j, ".");
+                        }
+                    }
+//                System.out.print(rolls.get(i).get(j)+" ");
+                }
+            }
+            if(before == ans){break;}
+        }
+//            System.out.println("\n");
+        return ans;
     }
 }
 
